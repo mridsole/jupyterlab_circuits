@@ -1,0 +1,6 @@
+node_modules/
+lib/
+jupyterlab_circuits/
+jupyterlab_circuits.egg-info/
+MANIFEST.in
+**/session.vim

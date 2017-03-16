@@ -1,0 +1,54 @@
+{
+  "private": true,
+  "name": "jupyterlab_circuits",
+  "version": "0.1.0",
+  "description": "Circuits for JupyterLab",
+  "author": "David Rapisarda",
+  "main": "build-extension.js",
+  "keywords": [
+    "jupyter",
+    "jupyterlab"
+  ],
+  "scripts": {
+    "build:src": "tsc --project src && node scripts/copyfiles.js",
+    "build:extension": "node scripts/build_extension.js",
+    "watch": "node scripts/build_extension.js --watch=true",
+    "build": "npm run build:src && npm run build:extension",
+    "clean": "rimraf lib && rimraf jupyterlab_circuits/static",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {
+    "@phosphor/algorithm": "0.1.0",
+    "@phosphor/application": "0.1.2",
+    "@phosphor/commands": "^0.1.2",
+    "@phosphor/coreutils": "^0.1.1",
+    "@phosphor/widgets": "^0.1.4",
+    "@types/react": "^15.0.16",
+    "@types/react-codemirror": "^0.2.5",
+    "@types/react-dom": "^0.14.19",
+    "@types/shortid": "0.0.28",
+    "classnames": "^2.2.5",
+    "codemirror": "^5.20.2",
+    "jupyterlab": "^0.17.0-0",
+    "lodash": "^4.16.4",
+    "mobx": "^3.0.0",
+    "mobx-proxy": "file:../mobx-proxy",
+    "mobx-react": "^4.1.0",
+    "mobx-react-devtools": "^4.2.11",
+    "react": "^15.4.1",
+    "react-codemirror": "^0.3.0",
+    "react-dom": "^15.4.1",
+    "react-measure": "^1.4.6",
+    "shortid": "^2.2.8"
+  },
+  "devDependencies": {
+    "@jupyterlab/extension-builder": "file:../extension-builder",
+    "@types/node": "^6.0.59",
+    "fs-extra": "^0.30.0",
+    "minimist": "^1.2.0",
+    "rimraf": "^2.5.4",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^1.2.2",
+    "typescript": "^2.1.1"
+  }
+}
