@@ -1,4 +1,3 @@
-import { proxyObservable } from 'mobx-proxy';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as _ from 'lodash';
@@ -31,21 +30,21 @@ class CircuitEditorGridComponent extends React.Component<any, any> {
     
     // Default props - really the defaults shouldn't happen though.
     const options = _.defaults({}, this.props, {
-      viewPos: { x: 0, y: 0 },
+      pos: { x: 0, y: 0 },
       zoom: 1,
       spacing: 12
     });
 
     // Compute the grid offset.
     const offset = {
-      x: (-options.viewPos.x * options.zoom) % (options.zoom * options.spacing),
-      y: (-options.viewPos.y * options.zoom) % (options.zoom * options.spacing)
+      x: (-options.pos.x * options.zoom) % (options.zoom * options.spacing),
+      y: (-options.pos.y * options.zoom) % (options.zoom * options.spacing)
     };
 
     const absGridProps = {
       thickness: 1,
       spacing: options.zoom * options.spacing,
-      color: '#AAAAAA',
+      color: '#BBBBBB',
       offset: offset
     };
     
@@ -59,7 +58,7 @@ namespace CircuitEditorGridComponent {
   interface IProps {
 
     /** Position of the top left corner of the viewport. */
-    viewPos: { x: number, y: number };
+    pos: { x: number, y: number };
 
     /** Zoom factor/multiplier. */
     zoom: number;

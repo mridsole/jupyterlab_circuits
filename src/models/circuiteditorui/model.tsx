@@ -1,4 +1,7 @@
+import * as _ from 'lodash';
 import { proxyObservable } from 'mobx-proxy';
+import { action, computed } from 'mobx';
+import { Vec2, Rect } from '../../common/math';
 
 /**
  * @brief State and logic for a circuit editor.
@@ -13,7 +16,42 @@ class CircuitEditorUIModel {
   state: any;
 
   constructor (options: CircuitEditorUIModel.IOptions) {
-    this.state = proxyObservable({});
+
+    /* State is passed in from above - this allows for models that act on
+       their own portions of a unified state tree. This state will almost
+       always be a ProxyObservable. */
+    this.state = options.state;
+
+    // Some default state, in case we're not loading from a file or something.
+    _.defaultsDeep(this.state, {
+      
+      view: {
+        pos: { x: 0, y: 0 },
+        dims: { width: 0, height: 0 },
+        zoom: 1
+      },
+
+      grid: {
+        spacing: 12
+      }
+
+    });
+  }
+
+  /** Get the model space rectangle of the viewport. */
+  @computed get viewRect () {
+    return { 
+      x: this.state.view.pos,
+      y: {
+        x: this.state.view.pos.x + this.state.view.dims.width,
+        y: this.state.view.pos.y + this.state.view.dims.height
+      }
+    };
+  }
+  
+  /** Note: this does NOT resize the view - it's called in response to a change. */
+  @action onViewDimsChange (dims) {
+    _.assign(this.state.view.dims, dims);
   }
 }
 
@@ -22,6 +60,7 @@ namespace CircuitEditorUIModel {
   
   export
   interface IOptions {
-    
+
+    state: any;
   }
 }

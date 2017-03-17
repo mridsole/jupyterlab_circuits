@@ -1,4 +1,3 @@
-import { proxyObservable } from 'mobx-proxy';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as _ from 'lodash';
@@ -28,11 +27,13 @@ class AbsoluteGridComponent extends React.Component<any, any> {
       thickness: 1,
       color: '#AAAAAA',
       spacing: 12,
-      offset: { x: 5, y: 2 }
+      offset: { x: 0, y: 0 }
     });
 
-    const nx = this.dims.width / options.spacing + 1;
-    const ny = this.dims.height / options.spacing + 1;
+    // The mathematics following is not as simple as it could be but it works lol
+
+    const nx = this.dims.width / options.spacing + 2;
+    const ny = this.dims.height / options.spacing + 2;
 
     const vlines = _.map(_.range(ny), (k) => {
       return <rect key={k} x={0} y={k*options.spacing} fill={options.color}
@@ -59,6 +60,8 @@ class AbsoluteGridComponent extends React.Component<any, any> {
         }}
         >
         <div className={'jpcirc-AbsoluteGrid-root'}>
+          {/* TODO: crispEdges causes bad rendering on browser-level 
+              zoom - alternative? */}
           <svg style={svgStyle} shapeRendering={'crispEdges'}>
             <g> {vlines} </g>
             <g> {hlines} </g>

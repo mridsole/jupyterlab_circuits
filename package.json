@@ -31,7 +31,7 @@
     "codemirror": "^5.20.2",
     "jupyterlab": "^0.17.0-0",
     "lodash": "^4.16.4",
-    "mobx": "^3.0.0",
+    "mobx": "file:../mobx",
     "mobx-proxy": "file:../mobx-proxy",
     "mobx-react": "^4.1.0",
     "mobx-react-devtools": "^4.2.11",

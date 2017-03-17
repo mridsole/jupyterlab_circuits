@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { observable, action, autorun } from 'mobx';
 import { observer } from 'mobx-react';
-import { Vec2 } from '../../common/vec';
+import { Vec2 } from '../../common/math';
 
 require('./component.css');
 

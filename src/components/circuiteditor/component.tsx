@@ -1,9 +1,10 @@
-import { proxyObservable } from 'mobx-proxy';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { AbsoluteViewComponent } from '../absoluteview';
+//import { AbsoluteViewComponent } from '../absoluteview';
 import { AbsoluteGridComponent } from '../absolutegrid';
 import { CircuitEditorGridComponent } from './grid';
+import { CircuitEditorViewComponent } from './view';
+import { CircuitEditorUIModel } from '../../models/circuiteditorui';
 
 import './component.css';
 
@@ -16,30 +17,44 @@ class CircuitEditorComponent extends React.Component<any, any> {
 
   render () {
 
-    const absViewProps = {
+    const uiModel = this.props.uiModel;
+
+    const circViewProps = {
+
       items: [
         {
+          // This is now position in model space!
           pos: { x: 100, y: 200 },
           component: <div style={{ color: 'blue' }}>hello</div>,
           z: 0,
           id: '1'
         }
-      ]
+      ],
+
+      pos: uiModel.state.view.pos,
+      zoom: uiModel.state.view.zoom,
+      dims: uiModel.state.view.dims,
+
+      onMeasure: (dims) => {
+        uiModel.onViewDimsChange(dims);
+      }
     };
     
     return <div className='jpcirc-CircuitEditor-root' >
       <CircuitEditorGridComponent {...{
-        viewPos: { x: 0, y: 0 },
-        zoom: 1,
-        spacing: 12
+        pos: uiModel.state.view.pos,
+        zoom: uiModel.state.view.zoom,
+        spacing: uiModel.state.grid.spacing
       }} />
-      <AbsoluteViewComponent {...absViewProps} />
+      <CircuitEditorViewComponent {...circViewProps} />
     </div>;
   }
 }
 
-export
-namespace CircuitEditorComponent {
+export namespace CircuitEditorComponent {
   
-  // TODO: IProps
+  export interface IProps {
+
+    uiModel: CircuitEditorUIModel;
+  }
 }

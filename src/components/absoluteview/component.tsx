@@ -1,4 +1,3 @@
-import { proxyObservable } from 'mobx-proxy';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import * as _ from 'lodash';
@@ -19,6 +18,21 @@ class AbsoluteViewComponent extends
     // TODO: figure out efficient implementation and compute z ordering.
     // For now just render items ordered as they are.
 
+    const options = _.defaults({}, this.props, {
+      onClick: () => { },
+      onMouseDown: () => {},
+      onMouseUp: () => {},
+      onMouseEnter: () => {},
+      onMouseLeave: () => {},
+      onMouseMove: () => {},
+      onWheel: () => {}
+    });
+
+    const callbacks = _.pick(options, [
+      'onClick', 'onMouseDown', 'onMouseUp', 'onMouseEnter',
+      'onMouseLeave', 'onMouseMove', 'onWheel'
+    ]);
+
     const components = _.map(this.props.items, (item) => {
     
       const style = {
@@ -32,7 +46,7 @@ class AbsoluteViewComponent extends
       </div>;
     });
 
-    return <div className='jpcirc-AbsoluteView-root'>
+    return <div className='jpcirc-AbsoluteView-root' {...callbacks} >
       {components}
     </div>;
   }
@@ -51,7 +65,17 @@ export namespace AbsoluteViewComponent {
   }
 
   export interface IProps {
-
+    
+    // List of items to render.
     items: IItem[];
+
+    // Event handlers.
+    onClick?: (any) => void;
+    onMouseDown?: (any) => void;
+    onMouseUp?: (any) => void;
+    onMouseEnter?: (any) => void;
+    onMouseLeave?: (any) => void;
+    onMouseMove?: (any) => void;
+    onWheel?: (any) => void;
   }
 }

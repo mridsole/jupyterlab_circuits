@@ -2,7 +2,9 @@ import { Widget, Panel } from '@phosphor/widgets';
 import { Message } from '@phosphor/messaging';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { proxyObservable } from 'mobx-proxy';
 import { CircuitEditorComponent } from './components/circuiteditor';
+import { CircuitEditorUIModel } from './models/circuiteditorui';
 
 export
 class CircuitEditorPanel extends Panel {
@@ -16,7 +18,11 @@ class CircuitEditorPanel extends Panel {
     //// HACK: force no outline on the root node.
     this.node.style['outline'] = 'none';
 
-    ReactDOM.render(<CircuitEditorComponent />, this.node);
+    // For testing ...
+    const uiModel = new CircuitEditorUIModel({ state: proxyObservable({}) });
+    document['uiModel'] = uiModel;
+
+    ReactDOM.render(<CircuitEditorComponent uiModel={uiModel} />, this.node);
   }
 
   /**

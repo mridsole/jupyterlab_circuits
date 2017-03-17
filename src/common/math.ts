@@ -19,8 +19,11 @@ namespace Vec2 {
   }
 }
 
-export interface Vec3 {
-  x: number;
-  y: number;
-  z: number;
+/** A rectangle between these two points. */
+export interface Rect {
+  x: Vec2;
+  y: Vec2;
 }
+
+/** Check if two rectangles intersect partially. */
+
