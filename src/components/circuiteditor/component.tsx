@@ -3,7 +3,7 @@ import * as React from 'react';
 //import { AbsoluteViewComponent } from '../absoluteview';
 import { AbsoluteGridComponent } from '../absolutegrid';
 import { CircuitEditorGridComponent } from './grid';
-import { CircuitEditorViewComponent } from './view';
+import { CircuitEditorInterfaceViewComponent } from './view';
 import { CircuitEditorUIModel } from '../../models/circuiteditorui';
 
 import './component.css';
@@ -19,7 +19,7 @@ class CircuitEditorComponent extends React.Component<any, any> {
 
     const uiModel = this.props.uiModel;
 
-    const circViewProps = {
+    const circInterfaceViewProps = {
 
       items: [
         {
@@ -31,9 +31,7 @@ class CircuitEditorComponent extends React.Component<any, any> {
         }
       ],
 
-      pos: uiModel.state.view.pos,
-      zoom: uiModel.state.view.zoom,
-      dims: uiModel.state.view.dims,
+      uiModel: uiModel,
 
       onMeasure: (dims) => {
         uiModel.onViewDimsChange(dims);
@@ -41,12 +39,8 @@ class CircuitEditorComponent extends React.Component<any, any> {
     };
     
     return <div className='jpcirc-CircuitEditor-root' >
-      <CircuitEditorGridComponent {...{
-        pos: uiModel.state.view.pos,
-        zoom: uiModel.state.view.zoom,
-        spacing: uiModel.state.grid.spacing
-      }} />
-      <CircuitEditorViewComponent {...circViewProps} />
+      <CircuitEditorGridComponent {...{ uiModel }} />
+      <CircuitEditorInterfaceViewComponent {...circInterfaceViewProps} />
     </div>;
   }
 }

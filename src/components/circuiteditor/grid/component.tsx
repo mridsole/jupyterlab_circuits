@@ -4,20 +4,14 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import * as Measure from 'react-measure';
 import { AbsoluteGridComponent } from '../../absolutegrid';
+import { modelToView } from '../../../common/spaces';
+import { CircuitEditorUIModel } from '../../../models/circuiteditorui';
 
 import './component.css';
 
 /**
  * Grid specific to the circuit editor - this takes coordinates in model
- * space, and handles where the grid offset when panning and so forth.
- *
- * Need to sort out: do we proceed by defining prop interfaces like this,
- * or just pass stores to everything as required?
- *
- * The key factor is whether or not a component is reusable - if not,
- * then we don't worry about interface consistency. This component didn't
- * really need to be reusable I guess, so we could have just passed
- * stores directly.
+ * space, and handles where the grid offset when panning/zooming.
  */
 @observer export
 class CircuitEditorGridComponent extends React.Component<any, any> {
@@ -27,23 +21,21 @@ class CircuitEditorGridComponent extends React.Component<any, any> {
   }
 
   render () {
-    
-    // Default props - really the defaults shouldn't happen though.
-    const options = _.defaults({}, this.props, {
-      pos: { x: 0, y: 0 },
-      zoom: 1,
-      spacing: 12
-    });
 
-    // Compute the grid offset.
+    const uiModel = this.props.uiModel;
+    const viewState = uiModel.state.view;
+    
+    const viewSpacing = viewState.zoom * uiModel.state.grid.spacing;
+    
+    /* Goal: always have grid lines intersecting { x: 0, y: 0 }. */
     const offset = {
-      x: (-options.pos.x * options.zoom) % (options.zoom * options.spacing),
-      y: (-options.pos.y * options.zoom) % (options.zoom * options.spacing)
+      x: (-viewState.pos.x * viewState.zoom + viewState.dims.width / 2) % viewSpacing,
+      y: (-viewState.pos.y * viewState.zoom + viewState.dims.height / 2) % viewSpacing
     };
 
     const absGridProps = {
       thickness: 1,
-      spacing: options.zoom * options.spacing,
+      spacing: viewSpacing,
       color: '#BBBBBB',
       offset: offset
     };
@@ -57,13 +49,6 @@ namespace CircuitEditorGridComponent {
 
   interface IProps {
 
-    /** Position of the top left corner of the viewport. */
-    pos: { x: number, y: number };
-
-    /** Zoom factor/multiplier. */
-    zoom: number;
-
-    /** Spacing in model space. */
-    spacing: number;
+    uiModel: CircuitEditorUIModel;
   }
 }

@@ -4,14 +4,17 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import * as Measure from 'react-measure';
 import { AbsoluteViewComponent } from '../../absoluteview';
+import { modelToView } from '../../../common/spaces';
+import { CircuitEditorUIModel } from '../../../models/circuiteditorui';
 
 import './component.css';
 
 /**
- * Lke AbsoluteView, but works in model space coordinates.
+ * Lke AbsoluteView, but works in model space coordinates. This is used
+ * to render some interface components.
  */
 @observer export
-class CircuitEditorViewComponent extends React.Component<any, any> {
+class CircuitEditorInterfaceViewComponent extends React.Component<any, any> {
   
   constructor () {
     super();
@@ -29,10 +32,7 @@ class CircuitEditorViewComponent extends React.Component<any, any> {
           id: item.id,
           z: item.z,
           component: item.component,
-          pos: {
-            x: options.zoom * (item.pos.x - options.pos.x) + options.dims.width / 2,
-            y: options.zoom * (item.pos.y - options.pos.y) + options.dims.height / 2
-          }
+          pos: modelToView(this.props.uiModel.state.view, item.pos),
         };
       })
     };
@@ -44,7 +44,7 @@ class CircuitEditorViewComponent extends React.Component<any, any> {
 }
 
 export
-namespace CircuitEditorViewComponent {
+namespace CircuitEditorInterfaceViewComponent {
 
   /**
    * Represents something to be displayed in the view.
@@ -67,16 +67,7 @@ namespace CircuitEditorViewComponent {
 
   interface IProps {
 
-    /** Position of the top left corner of the viewport. */
-    /** Now the MIDDLE of the viewport. */
-    pos: { x: number, y: number };
-
-    /** Dimensions of the viewport in pixels - obtained either by onMeasure
-        or by other means. */
-    dims: { width: number, height: number };
-
-    /** Zoom factor/multiplier. */
-    zoom: number;
+    uiModel: CircuitEditorUIModel;
     
     /** Items to display; this should be computed from the model. */
     items: IItem[];

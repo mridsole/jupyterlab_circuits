@@ -26,8 +26,14 @@ class CircuitEditorUIModel {
     _.defaultsDeep(this.state, {
       
       view: {
+
+        /** Position of the center of the viewport in model space. */
         pos: { x: 0, y: 0 },
+
+        /** Dimensions of the viewport in pixels. */
         dims: { width: 0, height: 0 },
+
+        /** Zoom factor of the viewport. */
         zoom: 1
       },
 
