@@ -44,11 +44,14 @@
   "devDependencies": {
     "@jupyterlab/extension-builder": "file:../extension-builder",
     "@types/node": "^6.0.59",
+    "file-loader": "^0.10.1",
     "fs-extra": "^0.30.0",
     "minimist": "^1.2.0",
+    "react-svg-loader": "^1.1.1",
     "rimraf": "^2.5.4",
     "source-map-loader": "^0.1.5",
+    "svg-url-loader": "^2.0.2",
     "ts-loader": "^1.2.2",
-    "typescript": "^2.1.1"
+    "typescript": "^2.2.1"
   }
 }

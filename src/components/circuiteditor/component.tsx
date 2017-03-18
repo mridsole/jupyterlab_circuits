@@ -3,10 +3,12 @@ import * as React from 'react';
 //import { AbsoluteViewComponent } from '../absoluteview';
 import { AbsoluteGridComponent } from '../absolutegrid';
 import { CircuitEditorGridComponent } from './grid';
-import { CircuitEditorInterfaceViewComponent } from './view';
+import { CircuitEditorInterfaceViewComponent } from './interfaceview';
 import { CircuitEditorUIModel } from '../../models/circuiteditorui';
 
 import './component.css';
+
+const circuitdefs = require('./circuitsymbols/circuitdefs.svg');
 
 @observer export
 class CircuitEditorComponent extends React.Component<any, any> {
@@ -41,6 +43,10 @@ class CircuitEditorComponent extends React.Component<any, any> {
     return <div className='jpcirc-CircuitEditor-root' >
       <CircuitEditorGridComponent {...{ uiModel }} />
       <CircuitEditorInterfaceViewComponent {...circInterfaceViewProps} />
+      <svg style={{ position: 'absolute', left: 0, top: 0 }}>
+        <use x={100} xlinkHref={circuitdefs + '#bjtnpn'} />
+        <use x={0} xlinkHref={circuitdefs + '#resistor'} />
+      </svg>
     </div>;
   }
 }

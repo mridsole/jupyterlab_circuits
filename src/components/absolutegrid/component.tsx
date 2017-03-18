@@ -35,14 +35,30 @@ class AbsoluteGridComponent extends React.Component<any, any> {
     const nx = this.dims.width / options.spacing + 2;
     const ny = this.dims.height / options.spacing + 2;
 
-    const vlines = _.map(_.range(ny), (k) => {
-      return <rect key={k} x={0} y={k*options.spacing} fill={options.color}
-        width={((nx + 3) / (nx + 1)) * this.dims.width} height={options.thickness} />
+    //const hlines = _.map(_.range(ny), (k) => {
+    //  return <rect key={k} x={0} y={k*options.spacing} fill={options.color}
+    //    width={((nx + 3) / (nx + 1)) * this.dims.width} height={options.thickness} />
+    //});
+
+    //const vlines = _.map(_.range(nx), (k) => {
+    //  return <rect key={k} x={k*options.spacing} y={0} fill={options.color}
+    //    width={options.thickness} height={((ny + 3) / (ny + 1)) * this.dims.height} />
+    //});
+
+    const vlines = _.map(_.range(nx), (k) => {
+      
+      const x = k * options.spacing;
+      const length = ((ny + 3) / (ny + 1)) * this.dims.height;
+      return <line key={k} x1={x} x2={x} y1={0} y2={length}
+        strokeWidth={options.thickness} stroke={options.color} />;
     });
 
-    const hlines = _.map(_.range(nx), (k) => {
-      return <rect key={k} x={k*options.spacing} y={0} fill={options.color}
-        width={options.thickness} height={((ny + 3) / (ny + 1)) * this.dims.height} />
+    const hlines = _.map(_.range(ny), (k) => {
+      
+      const y = k * options.spacing;
+      const length = ((ny + 3) / (ny + 1)) * this.dims.width;
+      return <line key={k} y1={y} y2={y} x1={0} x2={length} 
+        strokeWidth={options.thickness} stroke={options.color} />;
     });
 
     const svgStyle = {
