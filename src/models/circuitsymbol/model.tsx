@@ -7,7 +7,7 @@ import { CircuitSymbolTemplate } from '../../common/circuit';
 export interface CircuitSymbol {
 
   // Template visual schematic (svg path + pin positions).
-  sym: CircuitSymbolTemplate;
+  template: CircuitSymbolTemplate;
   
   // The position in model space.
   pos: { x: number, y: number },
@@ -38,7 +38,7 @@ class CircuitSymbolModel {
   /** The pin positions in model space. */
   @computed get pinPositions () {
 
-    return _.chain(this.state.sym.pins)
+    return _.chain(this.state.template.pins)
 
       .keyBy((pin) => pin.name)
 
@@ -60,8 +60,8 @@ class CircuitSymbolModel {
     // TODO: factor in rotation and mirroring ???
 
     return {
-      x: this.state.pos.x + this.state.sym.dims.width / 2,
-      y: this.state.pos.y + this.state.sym.dims.height / 2
+      x: this.state.pos.x + this.state.template.dims.width / 2,
+      y: this.state.pos.y + this.state.template.dims.height / 2
     };
   }
   
@@ -69,9 +69,17 @@ class CircuitSymbolModel {
   set center (pos: { x: number, y: number }) {
 
     this.state.pos = {
-      x: pos.x - this.state.sym.dims.width / 2,
-      y: pos.y - this.state.sym.dims.height / 2
+      x: pos.x - this.state.template.dims.width / 2,
+      y: pos.y - this.state.template.dims.height / 2
     };
+  }
+
+  // Set the position such that the pin is at the specified position.
+  @action setPinPos (
+    { pos, pin }: { pos: { x: number, y: number }, pin: string }
+  ) {
+    const pinPos = _.find(this.state.template.pins, (p) => p.name == pin).pos;
+    this.state.pos = { x: pos.x - pinPos.x, y: pos.y - pinPos.y };
   }
 }
 

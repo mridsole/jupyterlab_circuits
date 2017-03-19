@@ -13,6 +13,9 @@ export interface CircuitWireNode {
 
   // List of IDs.
   connections: string[];
+  
+  // Pin information, if it's a pin node.
+  pin?: { name: string, pin: string };
 };
 
 /**
@@ -38,6 +41,22 @@ class CircuitWireNodeModel {
 
   @computed get isJunction () {
     return this.state.connections.length > 2;
+  }
+
+  @computed get isPinNode () {
+    return this.state.pin == null;
+  }
+
+  /** This provides a list of all the pins connected indirectly to this node. */
+  @computed get connectedPins () {
+
+    // Need graph traversal here ... TODO
+    
+    if (this.isPinNode) {
+      return this.state.pin;
+    } else {
+      return null;
+    }
   }
 
   @action setPos (pos: { x: number, y: number }) {

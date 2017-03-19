@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { action, computed } from 'mobx';
 import { Vec2, Rect } from '../../common/math';
 import { CircuitWireNode, CircuitWireNodeModel } from '../circuitwirenode';
+import { CircuitSymbol, CircuitSymbolModel } from '../circuitsymbol';
 
 /**
  */
@@ -25,9 +26,17 @@ export class CircuitVisualModel {
   }
 
   @computed get wireNodeModels () {
-    console.log('computed wireNodeModels!');
     return _.mapValues(this.state.wireNodes, (state, id) => {
       return new CircuitWireNodeModel({
+        state: state,
+        circuitVisualModel: this
+      });
+    });
+  }
+
+  @computed get symbolModels () {
+    return _.mapValues(this.state.symbols, (state, id) => {
+      return new CircuitSymbolModel({
         state: state,
         circuitVisualModel: this
       });

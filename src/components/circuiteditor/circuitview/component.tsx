@@ -21,7 +21,8 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
     const circuitVisualModel = this.props.circuitVisualModel;
 
     const wireNodes = circuitVisualModel.state.wireNodes;
-
+    
+    /* Create the wire components. */
     const wireComponents = _.chain(wireNodes)
 
       .map((wireNode, id) => {
@@ -39,20 +40,27 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
       .map((c) => {
         return <WireComponent {...{
           uiModel: uiModel,
-          childProps: {
-            node1: wireNodes[c.id1],
-            node2: wireNodes[c.id2],
-            uiModel: uiModel,
-            circuitVisualModel: circuitVisualModel,
-          },
+          node1: wireNodes[c.id1],
+          node2: wireNodes[c.id2],
+          circuitVisualModel: circuitVisualModel,
           key: c.id1 + '-' + c.id2
         }} />;
       })
 
       .value();
 
+    /* Create the symbol components. */
+    const symbolComponents = _.map(circuitVisualModel.symbolModels, (symbolModel, name) => {
+      return <SymbolComponent {...{
+        uiModel: uiModel,
+        circuitSymbolModel: symbolModel,
+        key: 'symbol-' + name
+      }} />;
+    });
+
     return <svg className='jpcirc-CircuitEditorCircuitView-root'>
       {wireComponents}
+      {symbolComponents}
     </svg>;
   }
 }
@@ -83,7 +91,7 @@ const ModelToViewComponent = (WrappedComponent) => {
     return <g transform={
       'matrix(' + [a, b, c, d, e, f].join(',') + ')'
     } >
-      <WrappedComponent { ...props.childProps } />
+      <WrappedComponent { ...props } />
     </g>;
   });
 }
@@ -107,6 +115,16 @@ const WireComponent = ModelToViewComponent(
     const pos2 = props.node2.pos;
 
     return <line x1={pos1.x} y1={pos1.y} x2={pos2.x} y2={pos2.y} 
-      strokeWidth={3} stroke={'#000000'} />;
+      strokeWidth={3} stroke={'#000000'} strokeLinecap={'round'} />;
+  })
+);
+
+const SymbolComponent = ModelToViewComponent(
+  observer((props: any) => {
+
+    const symbolModel = props.circuitSymbolModel;
+
+    return <use xlinkHref={symbolModel.state.template.path} 
+      x={symbolModel.state.pos.x} y={symbolModel.state.pos.y} />;
   })
 );
