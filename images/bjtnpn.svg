@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="47.5" height="80" version="1.1" viewBox="0 0 47.5 80" xmlns="http://www.w3.org/2000/svg">
+<svg width="41.5" height="80" version="1.1" viewBox="0 0 41.5 80" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(-9.7827 4.1302)">
     <g transform="matrix(3.7795 0 0 3.7795 -150.22 -25.649)">
       <path d="m42.333 16.277h5.8208" style="fill:none;stroke-linejoin:round;stroke-width:.79375;stroke:#000000"/>
       <path d="m48.154 11.514v9.525" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:.79375;stroke:#000000"/>
-      <path d="m48.154 13.631 6.35-3.175 1e-6 -4.7625" style="fill:none;stroke-linejoin:round;stroke-width:.79375;stroke:#000000"/>
-      <path d="m48.154 18.923 6.35 3.175 1e-6 4.7625" style="fill:none;stroke-linejoin:round;stroke-width:.79375;stroke:#000000"/>
-      <path d="m53.436 21.555-1.8351-2.6184-1.4391 2.6045z" style="fill:#000000;stroke-linejoin:round;stroke-width:.21167;stroke:#000000"/>
+      <path d="m48.154 13.631 4.7625-3.175v-4.7625" style="fill:none;stroke-linejoin:round;stroke-width:.79375;stroke:#000000"/>
+      <path d="m48.154 18.923 4.7625 3.175 1e-6 4.7625" style="fill:none;stroke-linejoin:round;stroke-width:.79375;stroke:#000000"/>
+      <path d="m52.296 21.687-1.201-2.051-1.1725 1.7536z" style="fill:#000000;stroke-miterlimit:4.5;stroke-width:.212;stroke:#000000"/>
     </g>
   </g>
 </svg>

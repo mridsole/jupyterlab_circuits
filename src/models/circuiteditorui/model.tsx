@@ -38,7 +38,7 @@ class CircuitEditorUIModel {
       },
 
       grid: {
-        spacing: 12
+        spacing: 10
       }
 
     });

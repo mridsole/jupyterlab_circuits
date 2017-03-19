@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 import { proxyObservable } from 'mobx-proxy';
 import { CircuitEditorComponent } from './components/circuiteditor';
 import { CircuitEditorUIModel } from './models/circuiteditorui';
+import { CircuitVisualModel } from './models/circuitvisual';
 
 export
 class CircuitEditorPanel extends Panel {
@@ -22,7 +23,34 @@ class CircuitEditorPanel extends Panel {
     const uiModel = new CircuitEditorUIModel({ state: proxyObservable({}) });
     document['uiModel'] = uiModel;
 
-    ReactDOM.render(<CircuitEditorComponent uiModel={uiModel} />, this.node);
+    // Do a little test here for computed models ...
+    const cvm = new CircuitVisualModel({
+      state: {
+        symbols: {},
+        wireNodes: {
+
+          a: {
+            pos: { x: 0, y: 0 },
+            connections: ['b', 'c']
+          },
+
+          b: {
+            pos: { x: 100, y: 0 },
+            connections: ['a', 'c']
+          },
+
+          c: {
+            pos: { x: 100, y: 100 },
+            connections: ['a', 'b']
+          }
+        }
+      }
+    });
+
+    ReactDOM.render(<CircuitEditorComponent uiModel={uiModel} circuitVisualModel={cvm} />, this.node);
+
+
+    document['cvm'] = cvm;
   }
 
   /**

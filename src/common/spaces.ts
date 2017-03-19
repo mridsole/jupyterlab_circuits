@@ -1,7 +1,7 @@
 import { Vec2 } from './math';
 
 /** Transform coordinates from model space to view space. */
-export function modelToView(viewState, pos: Vec2): Vec2 {
+export function modelToView (viewState, pos: Vec2): Vec2 {
   
   return {
     x: viewState.zoom * (pos.x - viewState.pos.x) + viewState.dims.width / 2,
@@ -10,7 +10,7 @@ export function modelToView(viewState, pos: Vec2): Vec2 {
 }
 
 /** Transform coordinates from view space to model space. */
-export function viewToModel(viewState, pos: Vec2): Vec2 {
+export function viewToModel (viewState, pos: Vec2): Vec2 {
 
   return {
     x: (pos.x - viewState.dims.width / 2) / viewState.zoom + viewState.pos.x,
