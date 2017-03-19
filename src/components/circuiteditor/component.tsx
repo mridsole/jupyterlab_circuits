@@ -49,7 +49,7 @@ class CircuitEditorComponent extends React.Component<any, any> {
       }
     };
     
-    return <div className='jpcirc-CircuitEditor-root' >
+    return <div className='jpcirc-CircuitEditor-root'>
       <CircuitEditorGridComponent {...{ uiModel }} />
       <CircuitEditorCircuitViewComponent {...circuitViewProps} />
       <CircuitEditorInterfaceViewComponent {...interfaceViewProps} />
