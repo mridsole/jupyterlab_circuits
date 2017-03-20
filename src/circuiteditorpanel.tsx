@@ -35,14 +35,14 @@ class CircuitEditorPanel extends Panel {
             pos: { x: 200, y: 0 },
             rot: 0,
             mirror: false
-          }
+          },
         },
 
         wireNodes: {
 
           a: {
             pos: { x: 0, y: 0 },
-            connections: ['b', 'c']
+            connections: ['b', 'c', 'd']
           },
 
           b: {
@@ -53,6 +53,11 @@ class CircuitEditorPanel extends Panel {
           c: {
             pos: { x: 100, y: 100 },
             connections: ['a', 'b']
+          },
+
+          d: {
+            pos: { x: -50, y: 0 },
+            connections: ['a']
           }
         }
       })

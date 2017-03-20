@@ -49,6 +49,15 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
 
       .value();
 
+    /* Create the wire node components. */
+    const wireNodeComponents = _.map(circuitVisualModel.wireNodeModels, (wireNodeModel, id) => {
+      return <WireNodeComponent {...{
+        uiModel: uiModel,
+        wireNodeModel: wireNodeModel,
+        key: 'node-' + id
+      }} />
+    });
+
     /* Create the symbol components. */
     const symbolComponents = _.map(circuitVisualModel.symbolModels, (symbolModel, name) => {
       return <SymbolComponent {...{
@@ -61,6 +70,7 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
     return <svg className='jpcirc-CircuitEditorCircuitView-root'>
       {wireComponents}
       {symbolComponents}
+      {wireNodeComponents}
     </svg>;
   }
 }
@@ -101,21 +111,26 @@ const WireComponent = ModelToViewComponent(
 
     // Wrapped in ModelToView; work in model space!
 
-    // Formatting etc should go here.
-    // We draw a line between two nodes.
-
-    // Compute position in view space.
-
-    //const pos1 = modelToView(props.uiModel.state.view, props.node1.pos);
-    //const pos2 = modelToView(props.uiModel.state.view, props.node2.pos);
-
-    // TODO: scaling line width with zoom?
-
     const pos1 = props.node1.pos;
     const pos2 = props.node2.pos;
 
     return <line x1={pos1.x} y1={pos1.y} x2={pos2.x} y2={pos2.y} 
       strokeWidth={3} stroke={'#000000'} strokeLinecap={'round'} />;
+  })
+);
+
+const WireNodeComponent = ModelToViewComponent(
+  observer((props: any) => {
+
+    const wireNodeModel = props.wireNodeModel;
+
+    // If this is a junction, we render a black circle.
+    if (wireNodeModel.isJunction) {
+      return <circle cx={wireNodeModel.state.pos.x} 
+        cy={wireNodeModel.state.pos.y} r={4} />;
+    } else {
+      return null;
+    }
   })
 );
 
