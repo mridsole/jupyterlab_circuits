@@ -3,6 +3,7 @@ import { proxyObservable } from 'mobx-proxy';
 import { action, computed } from 'mobx';
 import { Vec2, Rect } from '../../common/math';
 import { viewToModel, modelToView } from '../../common/spaces';
+import { CircuitVisualModel } from '../circuitvisual';
 
 /**
  * @brief State and logic for a circuit editor.
@@ -16,6 +17,8 @@ class CircuitEditorUIModel {
   // Ideally all observable state should be in this ProxyObservable.
   state: any;
 
+  circuitVisualModel: CircuitVisualModel;
+
   constructor (options: CircuitEditorUIModel.IOptions) {
 
     /* State is passed in from above - this allows for models that act on
@@ -23,9 +26,13 @@ class CircuitEditorUIModel {
        always be a ProxyObservable. */
     this.state = options.state;
 
+    /* Store reference to the visual model of the circuit. */
+    this.circuitVisualModel = options.circuitVisualModel;
+
     // Some default state, in case we're not loading from a file or something.
     _.defaultsDeep(this.state, {
-
+      
+      /** State related to the user's cursor. */
       mouse: {
 
         /** Position of the mouse in model space. */
@@ -34,7 +41,8 @@ class CircuitEditorUIModel {
         /** Position of the mouse when panning started (model space). */
         panStartPos: { x: 0, y: 0 }
       },
-      
+
+      /** State related to the circuit editor viewport. */
       view: {
 
         /** Position of the center of the viewport in model space. */
@@ -52,9 +60,16 @@ class CircuitEditorUIModel {
         /** Position of the view when panning started (model space). */
         panStartPos: { x: 0, y: 0 }
       },
-
+      
+      /** State related to the circuit editor grid. */
       grid: {
         spacing: 20
+      },
+
+      /** State related to the user's selection. */
+      circuitSelections: {
+        symbols: [],
+        wireNodes: []
       }
 
     });
@@ -106,10 +121,17 @@ class CircuitEditorUIModel {
   }
 
   @action pan () {
-    this.state.view.pos.x = this.state.view.panStartPos.x - 
-      (this.state.mouse.pos.x - this.state.mouse.panStartPos.x);
-    this.state.view.pos.y = this.state.view.panStartPos.y - 
-      (this.state.mouse.pos.y - this.state.mouse.panStartPos.y);
+    if (this.state.view.panning) {
+      this.state.view.pos.x = this.state.view.panStartPos.x - 
+        (this.state.mouse.pos.x - this.state.mouse.panStartPos.x);
+      this.state.view.pos.y = this.state.view.panStartPos.y - 
+        (this.state.mouse.pos.y - this.state.mouse.panStartPos.y);
+    }
+  }
+
+  /** This doesn't really NEED to be a computed, but why not? */
+  @computed get circuitSelectionsModel () {
+    return new SelectionsModel(this.state.circuitSelections);
   }
 }
 
@@ -119,6 +141,54 @@ namespace CircuitEditorUIModel {
   export
   interface IOptions {
 
+    state: any;
+    circuitVisualModel: CircuitVisualModel;
+  }
+}
+
+/** TODO: move this elsewhere? no need really */
+export class SelectionsModel {
+
+  state: any;
+  
+  constructor (options: SelectionsModel.IOptions) {
+    
+    this.state = options.state;
+  }
+
+  @action assertCategory (category) {
+
+    if (!(category in this.state)) {
+      this.state[category] = [];
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @action select ({ category, item }) {
+    
+    if (!(this.state[category].includes(item))) {
+      this.state[category].push(item);
+    }
+  }
+  
+  @action deselect ({ category, item }) {
+
+    _.remove(this.state[category], (x) => item == x);
+  }
+
+  @action deselectAll () {
+
+    _.each(this.state, (items, category) => {
+      items.length = 0; // lol t-thanks javascript
+    });
+  }
+}
+
+export namespace SelectionsModel {
+
+  export interface IOptions {
     state: any;
   }
 }

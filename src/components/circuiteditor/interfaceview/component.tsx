@@ -58,7 +58,10 @@ class CircuitEditorInterfaceViewComponent extends React.Component<any, any> {
       onMouseMove: (e) => {
         uiModel.updateMousePos({ x: e.clientX, y: e.clientY });
 
-        if (uiModel.state.view.panning) { uiModel.pan(); }
+        if (uiModel.state.view.panning) {
+          uiModel.pan();
+          window.getSelection().removeAllRanges();
+        }
 
         if (!e.ctrlKey) { uiModel.stopPanning(); }
       },

@@ -19,12 +19,8 @@ class CircuitEditorPanel extends Panel {
 
     //// HACK: force no outline on the root node.
     this.node.style['outline'] = 'none';
-
-    // For testing ...
-    const uiModel = new CircuitEditorUIModel({ state: proxyObservable({}) });
-    document['uiModel'] = uiModel;
-
-    // Do a little test here for computed models ...
+    
+    // some sample data?
     const cvm = new CircuitVisualModel({
       state: proxyObservable({
 
@@ -62,6 +58,10 @@ class CircuitEditorPanel extends Panel {
         }
       })
     });
+
+    const uiModel = new CircuitEditorUIModel({ state: proxyObservable({}), circuitVisualModel: cvm });
+    document['uiModel'] = uiModel;
+
 
     ReactDOM.render(<CircuitEditorComponent uiModel={uiModel} circuitVisualModel={cvm} />, this.node);
 

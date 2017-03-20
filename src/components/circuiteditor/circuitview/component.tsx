@@ -55,7 +55,7 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
         uiModel: uiModel,
         wireNodeModel: wireNodeModel,
         key: 'node-' + id
-      }} />
+      }} />;
     });
 
     /* Create the symbol components. */
@@ -126,7 +126,7 @@ const WireNodeComponent = ModelToViewComponent(
 
     // If this is a junction, we render a black circle.
     if (wireNodeModel.isJunction) {
-      return <circle cx={wireNodeModel.state.pos.x} 
+      return <circle cx={wireNodeModel.state.pos.x} onClick={() => { console.log('WAT'); }}
         cy={wireNodeModel.state.pos.y} r={4} />;
     } else {
       return null;
