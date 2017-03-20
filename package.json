@@ -29,6 +29,7 @@
     "@types/shortid": "0.0.28",
     "classnames": "^2.2.5",
     "codemirror": "^5.20.2",
+    "json-cycle": "^1.0.5",
     "jupyterlab": "^0.17.0-0",
     "lodash": "^4.16.4",
     "mobx": "file:../mobx",
