@@ -29,7 +29,8 @@ export class CircuitVisualModel {
     return _.mapValues(this.state.wireNodes, (state, id) => {
       return new CircuitWireNodeModel({
         state: state,
-        circuitVisualModel: this
+        circuitVisualModel: this,
+        id
       });
     });
   }
@@ -38,7 +39,8 @@ export class CircuitVisualModel {
     return _.mapValues(this.state.symbols, (state, id) => {
       return new CircuitSymbolModel({
         state: state,
-        circuitVisualModel: this
+        circuitVisualModel: this,
+        id
       });
     });
   }

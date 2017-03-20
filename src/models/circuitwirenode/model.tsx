@@ -5,9 +5,6 @@ import { CircuitVisualModel } from '../circuitvisual';
 
 export interface CircuitWireNode {
   
-  // The node's ID.
-  id: string;
-  
   // The position in model space.
   pos: { x: number, y: number },
 
@@ -25,6 +22,7 @@ class CircuitWireNodeModel {
   
   // Ideally all observable state should be in this ProxyObservable.
   state: CircuitWireNode;
+  id: string;
 
   constructor (options: CircuitWireNodeModel.IOptions) {
 
@@ -32,6 +30,7 @@ class CircuitWireNodeModel {
        their own portions of a unified state tree. This state will almost
        always be a ProxyObservable. */
     this.state = options.state;
+    this.id = options.id;
 
     // Some default state, in case we're not loading from a file or something.
     _.defaultsDeep(this.state, {
@@ -72,5 +71,6 @@ namespace CircuitWireNodeModel {
     
     circuitVisualModel: CircuitVisualModel;
     state: CircuitWireNode;
+    id: string;
   }
 }

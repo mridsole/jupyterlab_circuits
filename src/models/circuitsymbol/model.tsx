@@ -26,6 +26,7 @@ class CircuitSymbolModel {
   
   // Ideally all observable state should be in this ProxyObservable.
   state: CircuitSymbol;
+  id: string;
 
   constructor (options: CircuitSymbolModel.IOptions) {
 
@@ -33,6 +34,7 @@ class CircuitSymbolModel {
        their own portions of a unified state tree. This state will almost
        always be a ProxyObservable. */
     this.state = options.state;
+    this.id = options.id;
   }
   
   /** The pin positions in model space. */
@@ -91,5 +93,6 @@ namespace CircuitSymbolModel {
     
     circuitVisualModel: CircuitVisualModel;
     state: CircuitSymbol;
+    id: string;
   }
 }

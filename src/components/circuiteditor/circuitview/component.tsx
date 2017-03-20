@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import * as Measure from 'react-measure';
 import { CircuitSymbolTemplate } from '../../../common/circuit';
 import { CircuitEditorUIModel } from '../../../models/circuiteditorui';
 import { CircuitVisualModel } from '../../../models/circuitvisual';
@@ -17,9 +18,10 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
 
   render () {
 
+    const controller = this.props.controller;
+    const onMeasure = 'onMeasure' in this.props ? this.props.onMeasure : () => {};
     const uiModel = this.props.uiModel;
     const circuitVisualModel = this.props.circuitVisualModel;
-
     const wireNodes = circuitVisualModel.state.wireNodes;
     
     /* Create the wire components. */
@@ -52,6 +54,7 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
     /* Create the wire node components. */
     const wireNodeComponents = _.map(circuitVisualModel.wireNodeModels, (wireNodeModel, id) => {
       return <WireNodeComponent {...{
+        controller: controller.node,
         uiModel: uiModel,
         wireNodeModel: wireNodeModel,
         key: 'node-' + id
@@ -61,17 +64,23 @@ class CircuitEditorCircuitViewComponent extends React.Component<any, any> {
     /* Create the symbol components. */
     const symbolComponents = _.map(circuitVisualModel.symbolModels, (symbolModel, name) => {
       return <SymbolComponent {...{
+        controller: controller.symbol,
         uiModel: uiModel,
         circuitSymbolModel: symbolModel,
         key: 'symbol-' + name
       }} />;
     });
 
-    return <svg className='jpcirc-CircuitEditorCircuitView-root'>
-      {wireComponents}
-      {symbolComponents}
-      {wireNodeComponents}
-    </svg>;
+    // Div wrapper because it plays nicer with Measure
+    return <Measure onMeasure={onMeasure}>
+      <div className='jpcirc-CircuitEditorCircuitView-root'>
+        <svg className='jpcirc-CircuitEditorCircuitView-root' {...controller.background}>
+          {wireComponents}
+          {symbolComponents}
+          {wireNodeComponents}
+        </svg>
+      </div>
+    </Measure>;
   }
 }
 
@@ -81,6 +90,11 @@ export namespace CircuitEditorCircuitViewComponent {
 
     uiModel: CircuitEditorUIModel;
     circuitVisualModel: CircuitVisualModel;
+
+    controller: { [key: string]: (any) => void };
+
+    /** Called when the viewport dimensions are measured. */
+    onMeasure?: any;
   }
 }
 
@@ -123,10 +137,11 @@ const WireNodeComponent = ModelToViewComponent(
   observer((props: any) => {
 
     const wireNodeModel = props.wireNodeModel;
+    const controller = props.controller;
 
     // If this is a junction, we render a black circle.
     if (wireNodeModel.isJunction) {
-      return <circle cx={wireNodeModel.state.pos.x} onClick={() => { console.log('WAT'); }}
+      return <circle {...controller} cx={wireNodeModel.state.pos.x}
         cy={wireNodeModel.state.pos.y} r={4} />;
     } else {
       return null;
@@ -137,9 +152,19 @@ const WireNodeComponent = ModelToViewComponent(
 const SymbolComponent = ModelToViewComponent(
   observer((props: any) => {
 
+    const controller = props.controller;
     const symbolModel = props.circuitSymbolModel;
 
-    return <use xlinkHref={symbolModel.state.template.path} 
+    const innerController = _.defaults(
+      {
+        onClick: (e) => {
+          controller.onClick(e, symbolModel)
+        }
+      }, 
+      controller
+    );
+
+    return <use {...innerController} xlinkHref={symbolModel.state.template.path} 
       x={symbolModel.state.pos.x} y={symbolModel.state.pos.y} />;
   })
 );

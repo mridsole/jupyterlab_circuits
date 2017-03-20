@@ -131,7 +131,7 @@ class CircuitEditorUIModel {
 
   /** This doesn't really NEED to be a computed, but why not? */
   @computed get circuitSelectionsModel () {
-    return new SelectionsModel(this.state.circuitSelections);
+    return new SelectionsModel({ state: this.state.circuitSelections });
   }
 }
 

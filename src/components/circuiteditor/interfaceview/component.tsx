@@ -84,9 +84,9 @@ class CircuitEditorInterfaceViewComponent extends React.Component<any, any> {
       },
     };
 
-    return <Measure onMeasure={options.onMeasure}>
+    return <div className={'jpcirc-InterfaceView-root'}>
       <AbsoluteViewComponent {...absViewProps} />
-    </Measure>;
+    </div>;
   }
 }
 
@@ -118,8 +118,5 @@ namespace CircuitEditorInterfaceViewComponent {
     
     /** Items to display; this should be computed from the model. */
     items: IItem[];
-
-    /** Called when the viewport dimensions are measured. */
-    onMeasure?: any;
   }
 }
