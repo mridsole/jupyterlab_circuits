@@ -4,3 +4,5 @@ jupyterlab_circuits/
 jupyterlab_circuits.egg-info/
 MANIFEST.in
 **/session.vim
+
+!jupyterlab_circuits/__init__.py

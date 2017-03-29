@@ -42,9 +42,9 @@ class CircuitEditorComponent extends React.Component<any, any> {
           if (!e.ctrlKey) { return; }
 
           if (e.deltaY < 0 && uiModel.state.view.zoom < 10) {
-            uiModel.multiplyZoom(1.2);
+            uiModel.multiplyZoom(1.05);
           } else if (e.deltaY > 0 && uiModel.state.view.zoom > 0.2) {
-            uiModel.multiplyZoom(1/1.2);
+            uiModel.multiplyZoom(1/1.05);
           }
           e.preventDefault();
         },

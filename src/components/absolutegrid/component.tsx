@@ -32,13 +32,15 @@ class AbsoluteGridComponent extends React.Component<any, any> {
 
     // The mathematics following is not as simple as it could be but it works lol
 
-    const nx = this.dims.width / options.spacing + 2;
-    const ny = this.dims.height / options.spacing + 2;
+    const nx = Math.round(this.dims.width / options.spacing + 2);
+    const ny = Math.round(this.dims.height / options.spacing + 2);
+
+    console.log(nx);
 
     const vlines = _.map(_.range(nx), (k) => {
       
       const x = k * options.spacing;
-      const length = ((ny + 3) / (ny + 1)) * this.dims.height;
+      const length = (ny + 1) * options.spacing;
       return <line key={k} x1={x} x2={x} y1={0} y2={length}
         strokeWidth={options.thickness} stroke={options.color} />;
     });
@@ -46,14 +48,17 @@ class AbsoluteGridComponent extends React.Component<any, any> {
     const hlines = _.map(_.range(ny), (k) => {
       
       const y = k * options.spacing;
-      const length = ((ny + 3) / (ny + 1)) * this.dims.width;
+      //const length = ((ny + 3) / (ny + 1)) * this.dims.width;
+      const length = (nx + 1) * options.spacing;
       return <line key={k} y1={y} y2={y} x1={0} x2={length} 
         strokeWidth={options.thickness} stroke={options.color} />;
     });
 
     const svgStyle = {
-      width: this.dims.width * (nx + 3) / (nx + 1),
-      height: this.dims.height * (ny + 3) / (ny + 1),
+      //width: this.dims.width * (nx + 3) / (nx + 1),
+      //height: this.dims.height * (ny + 3) / (ny + 1),
+      width: options.spacing * (nx + 1),
+      height: options.spacing * (ny + 1),
       position: 'absolute',
       left: -options.spacing + options.offset.x,
       top: -options.spacing + options.offset.y
